@@ -18,6 +18,7 @@ export default {
 
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
+    '~/assets/fontawesome/css/all.min.css',
   ],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
@@ -42,7 +43,8 @@ export default {
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
     // Workaround to avoid enforcing hard-coded localhost:3000: https://github.com/nuxt-community/axios-module/issues/308
-    baseURL: '/',
+    proxy: true,
+    baseURL: 'http://127.0.0.1:8000/api/v1',
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
@@ -52,16 +54,16 @@ export default {
     strategies: {
       local: {
         endpoints: {
-        login: { url: 'http://127.0.0.1:8000/api/v1/auth/token/login/', method: 'post', propertyName: 'auth_token' },
-        user: { url: 'http://127.0.0.1:8000/api/v1/users/me/', method: 'get', propertyName: 'auth_token' },
-        logout: { url: 'http://127.0.0.1:8000/api/v1/auth/token/logout/', method: 'post', propertyName: 'auth_token' }
+        login: { url: 'http://127.0.0.1:8000/api/v1/auth/token/login/', method: 'post', changeOrigin: true, propertyName: 'auth_token' },
+        user: { url: 'http://127.0.0.1:8000/api/v1/users/me/', method: 'get', propertyName: 'auth_token', changeOrigin: true },
+        logout: { url: 'http://127.0.0.1:8000/api/v1/auth/token/logout/', method: 'post', propertyName: 'auth_token', changeOrigin: true }
         },
         tokenType: 'Token',
         tokenName: 'Authorization'
       }
       },
       redirect: {
-        signIn: '/auth/signIn',
+        login: '/auth/signIn',
         home: '/'
     }
   },

@@ -1,75 +1,151 @@
 <template>
-
   <div class="container">
-    <div class="ball red left"></div>
-    <div class="ball red right"></div>
-    <div class="content">
-        <div class="login-box">
-            <h1>Login</h1>
-            <div class="textbox">
-            <i class="fa fa-user" aria-hidden="true"></i>
-            <input type="text" name="username" value="" placeholder="Username:">
-            </div>
-            <div class="textbox">
-            <i class="fa fa-lock" aria-hidden="true"></i>
-            <input type="password" name="password" value="" placeholder="Password:">
-            </div>
-            <input class="btn" type="button" name="login" value="Sign In">
-        </div> 
-    </div> 
+    <div class="header">
+      <h1>B.S.K Esports</h1>
+    </div>
+    <div class="main">
+      <span>
+        <i class="fa fa-user"></i>
+        <input
+          type="text"
+          placeholder="Username"
+          name="username"
+          v-model="username"
+        /> </span
+      ><br />
+      <span>
+        <i class="fa fa-lock"></i>
+        <input
+          type="password"
+          placeholder="password"
+          name="password"
+          v-model="password"
+        /> </span
+      ><br />
+      <button @click="login">login</button>
+    </div>
   </div>
-
 </template>
 
 <script>
 export default {
-  name: 'Home'
-}
+  name: "Home",
+  data() {
+    return {
+      username: "",
+      password: "",
+      error: null,
+    };
+  },
+  methods: {
+    async login() {
+      try {
+        const ddd = await this.$auth.loginWith('local', {
+          data: {
+          username: this.username,
+          password: this.password
+          }
+        })
+        console.log(ddd)
+        // this.$store.commit('auth/setToken', token);
+        // this.$store.commit('auth/updateUser', user);
+        this.$router.push('/')
+      } catch (e) {
+        this.error = e.response.data.message
+      }
+    }
+  },
+};
 </script>
 
-<style >
+<style>
 /* @import "https://pro.fontawesome.com/releases/v5.10.0/css/all.css"; */
 
 * {
-  margin: 0; padding: 0;
+  margin: 0;
+  padding: 0;
   box-sizing: border-box;
-  
-}
-  
-.content {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: absolute;
-    top: 0; left: 0;
-    bottom: 0; right: 0;
-    background: rgba(255, 255, 255, 0.24);
-box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-backdrop-filter: blur(5px);
--webkit-backdrop-filter: blur(5px);
-border: 1px solid rgba(255, 255, 255, 0.3);
-
 }
 
-.ball {
-    height: 150px;
-    width: 150px;
-    border-radius: 100%;
-    position: absolute;
+html {
+  min-height: 100%;
+}
+body {
+  font-family: sans-serif;
+  background-image: url(bg.jpg);
+  background-repeat: no-repeat;
+  overflow: hidden;
+  background-size: cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
 }
 
-.red {
-    background-color: red;
+.container {
+  width: 580px;
+  margin: 10% auto;
+  border-radius: 20px;
+  background-color: rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 17px rgb(206, 206, 206);
 }
 
-.left {
-    top: 200px;
-    left: 50px;
+.header {
+  text-align: center;
+  padding-top: 75px;
 }
 
-.right {
-    top: 100px;
-    right: 200px;
+.header h1 {
+  color: rgb(252, 252, 252);
+  font-size: 45px;
+  margin-bottom: 80px;
 }
- 
+
+.main {
+  text-align: center;
+}
+
+.main input,
+button {
+  width: 300px;
+  height: 40px;
+  border: none;
+  outline: none;
+  padding-left: 40px;
+  box-sizing: border-box;
+  font-size: 15px;
+  color: #333;
+  margin-bottom: 40px;
+}
+
+.main button {
+  padding-left: 0;
+  background-color: #5f6369;
+  letter-spacing: 1px;
+  font-weight: bold;
+  margin-bottom: 70px;
+  color: white;
+}
+
+.main button:hover {
+  box-shadow: 2px 2px 5px #555;
+  background-color: #494d55;
+  cursor: pointer;
+}
+.main input:hover {
+  box-shadow: 2px 2px 5px #555;
+  background-color: #ddd;
+}
+
+.main span {
+  position: relative;
+}
+
+.main i {
+  position: absolute;
+  left: 15px;
+  color: #333;
+  font-size: 16px;
+  top: 2px;
+}
 </style>
